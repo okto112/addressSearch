@@ -1,37 +1,30 @@
 <?php
+header("Content-Type: application/json; charset=utf-8");
 
-// header("Content-Type: application/json; charset=UTF-8");
+$zipcode = $_GET['zipcode'];
 
 // 郵便番号パラメータが存在するかチェック
-// if (!isset($_GET['zipcode']) || empty($_GET['zipcode'])) {
-//     echo json_encode([
-//         'status' => 400,
-//         'message' => '郵便番号が指定されていません'
-//     ]);
-//     exit;
-// }
+if (!isset($zipcode) || empty($zipcode)) {
+    echo json_encode([
+        'status' => 'error',
+        'message' => '郵便番号が指定されていません'
+    ]);
+    exit;
+}elseif (strlen($zipcode) != 7) {
+    echo json_encode([
+        'status' => 'error',
+        'message' => '郵便番号は7桁で入力してください'
+    ]);
+    exit;
+}elseif (!is_numeric($zip)) {
+    echo json_encode([
+        'status' => 'error',
+        'message' => '数字以外が入力されています'
+    ]);
+    exit;
+}
 
-// $zipcode = urlencode($_GET['zipcode']);
-// $url = "https://zipcloud.ibsnet.co.jp/api/search?zipcode=" . $zipcode;
-
-// // file_get_contents で API にアクセス
-// $response = @file_get_contents($url);
-// $zipcode = $_GET['zipcode'];
-// $response = file_get_contents('https://zipcloud.ibsnet.co.jp/api/search?zipcode='.$zipcode);
-
-// エラー処理
-// if ($response !== false) {
-//     echo $response;
-// } else {
-//     echo json_encode([
-//         'status' => 500,
-//         'message' => 'APIリクエストに失敗しました',
-//         'error' => error_get_last()
-//     ]);
-// }
-
-header("Content-Type: application/json; charset=utf-8");
-$zipcode = $_GET['zipcode'];
 $response = file_get_contents('https://zipcloud.ibsnet.co.jp/api/search?zipcode='.$zipcode);
+
 echo $response;
 exit;
